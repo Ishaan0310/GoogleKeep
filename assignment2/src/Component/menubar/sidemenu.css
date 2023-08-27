@@ -1,0 +1,25 @@
+.sideMenuDrawer .MuiDrawer-paper {
+    width: 240px; /* Adjust this width as necessary */
+    box-sizing: border-box;
+    position: absolute;
+    top: 64px; /* To ensure the Drawer starts below the AppBar */
+}
+
+.sideMenuCloseButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+}
+
+.sideMenuDarkIconButton {
+    color: rgb(30, 28, 28);
+}
+
+.sideMenuDarkListItem {
+    background-color: #121212;
+    color: white;
+}
+
+.sideMenuDarkListItemIcon {
+    color: white;
+}

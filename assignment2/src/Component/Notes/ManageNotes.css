@@ -1,0 +1,37 @@
+.noteCard {
+    background-color: rgba(255, 255, 255, 0.9);  /* A slightly transparent white background */
+    border-radius: 25px;
+    box-shadow: 0px 4px 15px rgba(210, 95, 95, 0.15); /* Shadow for depth */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    overflow: hidden; /* To handle the rounded corners for child elements */
+}
+
+.noteCard:hover {
+    transform: translateY(-5px); /* A subtle lift effect */
+    box-shadow: 0px 7px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow when hovering */
+}
+
+.noteCard > CardContent {
+    padding: 20px 15px;
+}
+
+.noteCard > CardContent > Typography {
+    margin-bottom: 10px;
+}
+
+.notesContainer {
+    padding-bottom: 50px; /* to ensure space for the pagination and any potential content beneath it */
+}
+
+
+.paginationFixed {
+    position: fixed;
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    z-index: 1000;  /* to ensure it's above other items */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+    padding: 5px 10px;
+    border-radius: 25px;
+}
