@@ -1,0 +1,272 @@
+import React, { useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import InputBase from '@mui/material/InputBase';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Typography } from '@mui/material';
+import './topmenu.css';
+import logo from '../../assets/keep.png';
+import profile from '../../assets/img3.gif';
+import SideMenu from './sidemenu';
+
+function Topmenu({ darkTheme, setDarkTheme }) {
+  const [settingsAnchorEl, setSettingsAnchorEl] = useState(null);
+  const [sideMenuOpen, setSideMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isSettingsOpen = Boolean(settingsAnchorEl);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkTheme ? 'dark' : 'light',
+    },
+  });
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleSettingsMenuOpen = (event) => {
+    setSettingsAnchorEl(event.currentTarget);
+  };
+
+  const handleSettingsMenuClose = () => {
+    setSettingsAnchorEl(null);
+  };
+
+  const handleDarkThemeToggle = () => {
+    setDarkTheme(prev => !prev);
+  };
+  const renderSettingsMenu = (
+    <Menu
+      anchorEl={settingsAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id="settings-menu"
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isSettingsOpen}
+      onClose={handleSettingsMenuClose}
+      
+    >
+      <MenuItem onClick={() => {
+        setDarkTheme(prevTheme => !prevTheme);
+        handleSettingsMenuClose();
+      }}>
+        {darkTheme ? 'Disable Dark Mode' : 'Enable Dark Mode'}
+      </MenuItem>
+    </Menu>
+  );
+  
+  const renderProfileMenu = (  // Profile Menu
+  <Menu
+  anchorEl={anchorEl}
+  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+  id="profile-menu"
+  keepMounted
+  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+  open={isMenuOpen}
+  onClose={handleMenuClose}
+>
+  <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+  <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+</Menu>
+);
+return (
+  <ThemeProvider theme={theme}>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: darkTheme ? "#000" : "primary.main", color: darkTheme ? "#fff" : "text.primary" }}>
+        <Toolbar className="toolbar"> 
+          <IconButton color="inherit" edge="start" onClick={() => setSideMenuOpen(true)}>
+            <MenuIcon />
+          </IconButton>
+          <Typography
+          className='keep'
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+                        <img src={logo} alt="logo" style={{ width: '32px', marginRight: '20px' }} />
+
+              
+              <span>Keep</span>
+            </Typography>
+          
+          
+          <div className="search-bar">
+            <SearchIcon  className="search-icon"/>
+            <InputBase
+              placeholder="Search…"
+              className="search-input"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          <IconButton color="inherit" onClick={handleSettingsMenuOpen}>
+            <SettingsIcon />
+          </IconButton>
+          <IconButton onClick={handleProfileMenuOpen}>
+            <img src={profile} alt="Profile" className="ProfileImage" />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      {renderProfileMenu}
+      {renderSettingsMenu}
+      <SideMenu open={sideMenuOpen} setOpen={setSideMenuOpen} darkTheme={darkTheme} />
+    </Box>
+  </ThemeProvider>
+);
+}
+
+export default Topmenu;
+
+import React from 'react';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
+export default function SideMenu({ open, setOpen, darkTheme }) {
+    const drawerWidth = 240; // You can adjust this width as necessary
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+    
+    return (
+        <Drawer
+    sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            top: '64px',  // This ensures the Drawer starts below the AppBar.
+            backgroundColor: darkTheme ? '#000' : '#fff',  // Change this to desired colors.
+            color: darkTheme ? '#fff' : '#000'  // Change text color depending on theme.
+        },
+    }}
+    variant="persistent"
+    anchor="left"
+    open={open}
+>
+    <div>
+        <IconButton onClick={handleDrawerClose} color={darkTheme ? "inherit" : "default"}>
+            <CloseIcon />
+        </IconButton>
+    </div>
+    <List>
+    {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        <ListItem 
+            key={text} 
+            disablePadding 
+            style={{
+                backgroundColor: darkTheme ? 'black' : 'white',
+                color: darkTheme ? 'white' : 'black'
+            }}
+        >
+            <ListItemButton>
+                <ListItemIcon style={{ color: darkTheme ? 'white' : 'black' }}>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+            </ListItemButton>
+        </ListItem>
+    ))}
+</List>.ProfileImage{
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    margin-left: 10px;
+}
+
+.keep img{
+ margin: 0px 0px -8px 20px;
+}
+
+.keep span{
+   margin-right: 30px;
+   margin-bottom: 10px;
+   margin-left: -15px;
+}
+
+
+.search-bar {
+    position: relative;
+    flex-grow: 2;
+  }
+  
+  .search-input {
+    width: 50%;
+    border: 1px solid #050910;
+    padding: 5px 10px 5px 40px; /* Left padding to accommodate the search icon */
+    border-radius: 5px;
+    margin-left: 200px;
+    transition: border-color 0.3s;
+  }
+  
+  .search-input:focus {
+    border-color: #333;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 205px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+  }
+
+
+</Drawer>
+
+    );
+}
+import React, { useState } from 'react';
+import Topmenu from './Component/menubar/topmenu';
+import SideMenu from './Component/menubar/sidemenu';
+
+function App() {
+  const [darkTheme, setDarkTheme] = useState(false);
+
+  return (
+    <div>
+      <Topmenu darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+      <SideMenu darkTheme={darkTheme} />
+    </div>
+  );
+}
+
+export default App;
+
+
+isme topmenu aur side menu kaam krrha hai first step.

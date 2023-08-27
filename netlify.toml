@@ -1,0 +1,3 @@
+[build]
+  functions = "functions"
+  publish = "assignment2/build"  # Assuming you're using Create React App or similar that outputs to a build directory
